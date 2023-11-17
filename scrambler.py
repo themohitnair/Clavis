@@ -1,78 +1,36 @@
-import secrets
-import string
+from clavis_modules import *
 
-DEFAULT_PUNC_STRING = ['!', '@', '#', '$', '%', '^', '&', '*', '_', ',', '.']
-
-UPPERCASE_PROMPT = "Enter the number of uppercase alphabetic characters in the password: "
-LOWERCASE_PROMPT = "Enter the number of lowercase alphabetic characters in the password: "
-NUMERIC_PROMPT = "Enter the number of numeric characters in the password: "
-TARGET_APPLICATION_PROMPT = "Enter the target application for the password: "
-
-def get_characters(prompt, characters):
-    while True:
-        try:
-            count = int(input(prompt))
-            if count < 0:
-                print("Please enter a non-negative integer.")
-            else:
-                chosen = [secrets.choice(characters) for _ in range(count)]
-                print(f"The characters chosen for the password are: {chosen}")
-                return chosen
-        except ValueError:
-            print("Invalid input. Please enter a valid non-negative integer.")
-
-def get_puncs():
-    while True:
-        print(f"Default punctuation symbols: {DEFAULT_PUNC_STRING}")
-        
-        choice = input("Do you want to exclude any punctuation symbols? (y/n): ")[0]
-        if choice.lower() == 'y':
-            excluded = input("Enter the characters to exclude (without spaces): ")
-            excluded_puncs = list(excluded)
-            allowed_puncs = [p for p in DEFAULT_PUNC_STRING if p not in excluded_puncs]
-            print(f"The allowed punctuation symbols are: {allowed_puncs}")
-            return allowed_puncs
-        elif choice.lower() == 'n':
-            return DEFAULT_PUNC_STRING
-        else:
-            print("Invalid input. Please enter 'y' or 'n'.")
-
-def generate():
-    target_application = input(TARGET_APPLICATION_PROMPT)
-    
-    uppercase_chars = get_characters(UPPERCASE_PROMPT, string.ascii_uppercase)
-    lowercase_chars = get_characters(LOWERCASE_PROMPT, string.ascii_lowercase)
-    numeric_chars = get_characters(NUMERIC_PROMPT, string.digits)
-    punctuation_chars = get_puncs()
-
-    usable = uppercase_chars + lowercase_chars + numeric_chars + punctuation_chars
-    print(f"The usable characters are: {usable}")
-    
-    while True:
-        choice = input("Do you want to shuffle? (y/n): ")[0]
-        if choice.lower() == 'y':
-            secrets.SystemRandom().shuffle(usable)
-        elif choice.lower() == 'n':
-            break
-        else:
-            print("Invalid input. Please enter 'y' or 'n'.")
-    
-    password = "".join(usable)
-
+def generator(list1, list2, list3, list4):    
+    password = "".join(shuffle_list((list1+list2+list3+list4),get_number(SHUFFLE_PROMPT)))
     return password
 
-def main():
-    print("\t----PASSWORD GENERATION----\t")
-    while True:        
-        password = generate()
-        print(f"Generated Password: {password}")
-        choice = input("Are you satisfied with the password? (y/n): ")
-        if choice.lower() == 'y':
-            break
-        elif choice.lower() == 'n':
-            print("\t----PASSWORD REGENERATION----\t")
+def satisfaction_check():
+    while True:
+        c = input(SATISFACTION_PROMPT)
+        if c.lower()[0]=='y':
+            return True
+        elif c.lower()[0]=='n':
+            return False
         else:
-            print("Invalid input. Please enter 'y' or 'n'.")
+            continue
 
-if __name__ == "__main__":
-    main()
+def main():
+    while True:
+        ups_selected = select_randomly(ups,get_number(UPPERCASE_PROMPT))
+        print(ups_selected)
+        lows_selected = select_randomly(lows,get_number(LOWERCASE_PROMPT))
+        print(lows_selected)
+        nums_selected = select_randomly(nums,get_number(NUMERIC_PROMPT))
+        print(nums_selected)
+        puncs_before_selection = exclude_from_puncs(get_excluded_puncstring(GET_EXCLUDED_PUNCSTRING))
+        print(f"The functional list of punctuation symbols is: {puncs_before_selection}")
+        puncs_selected = select_randomly(puncs_before_selection,get_number(PUNCTUATION_PROMPT))
+        print(puncs_selected)
+        print(f"The generated password is: \n{generator(ups_selected,lows_selected,nums_selected,puncs_selected)}")
+        if satisfaction_check()==False: 
+            print("Commencing password regeneration...")
+            continue
+        else:
+            break
+
+main()
