@@ -66,10 +66,10 @@ def exclude_from_puncs(excluded_punc_string): #tested
         print("No symbols were excluded")
     return puncs
 
-UPPERCASE_PROMPT = "Enter the number of uppercase alphabetic characters that must be included in the password (default = 6): "
-LOWERCASE_PROMPT = "Enter the number of lowercase alphabetic characters that must be included in the password (default = 6): "
-NUMERIC_PROMPT = "Enter the number of numeric characters that must be included in the password (default = 6): "
-PUNCTUATION_PROMPT = "Enter the number of punctuation symbols that must be included in the password (default = 6): "
-GET_EXCLUDED_PUNCSTRING = f"{puncs}" + "\nEnter the punctuation symbols to be excluded from your password: "
-SHUFFLE_PROMPT = "Enter the number of times to shuffle the password (default = 3): "
-SATISFACTION_PROMPT = "Are you satisfied with the password generation? (y/n)"
+UPPERCASE_PROMPT = "\nEnter the number of uppercase alphabetic characters that must be included in the password (default = 6): "
+LOWERCASE_PROMPT = "\nEnter the number of lowercase alphabetic characters that must be included in the password (default = 6): "
+NUMERIC_PROMPT = "\nEnter the number of numeric characters that must be included in the password (default = 6): "
+PUNCTUATION_PROMPT = "\nEnter the number of punctuation symbols that must be included in the password (default = 6): "
+GET_EXCLUDED_PUNCSTRING = f"\n{puncs}" + "\nEnter the punctuation symbols to be excluded from your password: "
+SHUFFLE_PROMPT = "\nEnter the number of times to shuffle the password (default = 3): "
+SATISFACTION_PROMPT = "\nAre you satisfied with the password generation? (y/n) "

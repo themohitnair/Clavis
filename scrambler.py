@@ -15,6 +15,7 @@ def satisfaction_check():
             continue
 
 def main():
+    print("Commencing password generation...")
     while True:
         ups_selected = select_randomly(ups,get_number(UPPERCASE_PROMPT))
         print(ups_selected)
